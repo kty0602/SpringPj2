@@ -70,6 +70,8 @@ public class TaskServiceImpl implements TaskService {
             task.changeName(requestDto.getName());
         }
         Task newTask = taskRepository.save(task);
+        
+        // 리턴되는 response값 댓글 수 올바르게 가져오기 위함 <- 크게 의미 없는 코드 없으면 0으로 임시 대체 해야함
         Object result = taskRepository.getTaskByTaskId(taskId);
         Object[] arr = (Object[])result;
         return entityToDTO(newTask, (Long)arr[1]);
