@@ -21,4 +21,14 @@ public class Reply extends BaseEntity {
     private String name;
     @Column(name = "delete_status")
     private boolean deleteStatus = Boolean.FALSE;
+
+    public void changeContent(String contents) {
+        this.contents = contents;
+    }
+    public void changeName(String name) {
+        this.name = name;
+    }
+    public void changeDelete(boolean deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
 }
