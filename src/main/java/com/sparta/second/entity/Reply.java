@@ -20,7 +20,7 @@ public class Reply extends BaseEntity {
     private String contents;
     private String name;
     @Column(name = "delete_status")
-    private boolean deleteStatus = Boolean.FALSE;
+    private boolean deleteStatus;
 
     public void changeContent(String contents) {
         this.contents = contents;
