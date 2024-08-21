@@ -11,6 +11,7 @@ public class TaskResponseDto {
     private String title;
     private String contents;
     private String name;
+    private int replyCount;
     private LocalDate regDate;
     private LocalDate modDate;
 

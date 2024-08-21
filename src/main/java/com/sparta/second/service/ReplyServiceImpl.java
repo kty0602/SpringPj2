@@ -27,7 +27,7 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public ReplyResponseDto save(ReplyRequestDto requestDto) {
         // 해당 일정이 존재하는지 확인
-        taskRepository.getTaskByTaskId(requestDto.getTaskId()).orElseThrow(() -> new NotFoundException("해당 일정이 존재하지 않습니다."));
+        taskRepository.checkTaskByTaskId(requestDto.getTaskId()).orElseThrow(() -> new NotFoundException("해당 일정이 존재하지 않습니다."));
 
         Reply reply = dtoToEntity(requestDto);
         Reply saveReply = replyRepository.save(reply);
