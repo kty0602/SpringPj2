@@ -2,7 +2,9 @@ package com.sparta.second.service;
 
 import com.sparta.second.dto.PageRequestDto;
 import com.sparta.second.dto.PageResultDto;
+import com.sparta.second.exception.AlreadyDeleteException;
 import com.sparta.second.exception.NotFoundException;
+import com.sparta.second.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +25,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
+    private final ReplyRepository replyRepository;
 
     // 일정 등록
     @Override
@@ -70,5 +73,17 @@ public class TaskServiceImpl implements TaskService {
         Object result = taskRepository.getTaskByTaskId(taskId);
         Object[] arr = (Object[])result;
         return entityToDTO(newTask, (Long)arr[1]);
+    }
+
+    // 일정 삭제
+    @Transactional
+    @Override
+    public void delete(Long taskId) {
+        if(taskRepository.isDelete(taskId)) {
+            throw new AlreadyDeleteException("해당 일정이 없습니다.");
+        } else {
+            taskRepository.delete(taskId);
+            replyRepository.deleteByTaskId(taskId);
+        }
     }
 }

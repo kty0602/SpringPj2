@@ -5,6 +5,7 @@ import com.sparta.second.entity.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -32,10 +33,17 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     // 특정 bno에 해당하는 게시글과 사용자 정보 댓글의 정보를 제공
     // 댓글을 삭제하여 false처리가 되어도 카운팅하는 현상을 수정
-    // (r is null or r.rdelete <> false) -> false인 댓글을 카운팅하지 않는다.
     @Query("SELECT t, COUNT(r) " +
             "FROM Task t " +
-            "LEFT OUTER JOIN Reply r on r.task = t " +
-            "where t.taskId = :taskId and (r is null or r.deleteStatus = false) group by t")
+            "LEFT OUTER JOIN Reply r ON r.task = t " +
+            "WHERE t.taskId = :taskId AND t.deleteStatus = false AND r.deleteStatus = false group by t")
     Object getTaskByTaskId(@Param("taskId") Long taskId);
+
+    @Query("SELECT CASE WHEN t.deleteStatus = true THEN true ELSE false END FROM Task t WHERE t.taskId = :taskId")
+    boolean isDelete(@Param("taskId") Long taskId);
+
+    // 일정 삭제
+    @Modifying
+    @Query("UPDATE Task t SET t.deleteStatus = true WHERE t.taskId = :taskId")
+    void delete(@Param("taskId") Long taskId);
 }

@@ -20,6 +20,9 @@ public interface TaskService {
     // 일정 수정
     TaskResponseDto modify(Long taskId, TaskRequestDto requestDto);
 
+    // 일정 삭제
+    void delete(Long taskId);
+
     default Task dtoToEntity(TaskRequestDto dto) {
         Task task = Task.builder()
                 .title(dto.getTitle())

@@ -49,5 +49,12 @@ public class TaskController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    // 댓글 삭제
+    @DeleteMapping("/{taskId}")
+    public ResponseEntity<String> deleteReply(@PathVariable("taskId") Long taskId) {
+        taskService.delete(taskId);
+        return new ResponseEntity<>("성공적으로 삭제가 되었습니다.", HttpStatus.OK);
+    }
+
 
 }

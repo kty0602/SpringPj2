@@ -29,4 +29,9 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     // deleteStatus가 false인 댓글들만 가져옴
     @Query("SELECT r FROM Reply r WHERE r.deleteStatus = false")
     List<Reply> findAllActiveReplies();
+
+    // 일정 삭제 시 해당 일정댓글들 상태 false로 삭제 처리
+    @Modifying
+    @Query("UPDATE Reply r set r.deleteStatus = true where r.task.taskId =:taskId")
+    void deleteByTaskId(Long taskId);
 }
