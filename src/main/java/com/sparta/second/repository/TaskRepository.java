@@ -33,11 +33,13 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     // 특정 bno에 해당하는 게시글과 사용자 정보 댓글의 정보를 제공
     // 댓글을 삭제하여 false처리가 되어도 카운팅하는 현상을 수정
-    @Query("SELECT t, COUNT(r) " +
+    @Query(value = "SELECT t, COUNT(r) " +
             "FROM Task t " +
             "LEFT OUTER JOIN Reply r ON r.task = t " +
-            "WHERE t.taskId = :taskId AND t.deleteStatus = false AND r.deleteStatus = false group by t")
-    Object getTaskByTaskId(@Param("taskId") Long taskId);
+            "WHERE t.taskId = :taskId AND t.deleteStatus = false AND r.deleteStatus = false " +
+            "GROUP BY t" ,
+            countQuery = "SELECT COUNT(t) FROM Task t")
+    Optional<Object> getTaskByTaskId(@Param("taskId") Long taskId);
 
     @Query("SELECT CASE WHEN t.deleteStatus = true THEN true ELSE false END FROM Task t WHERE t.taskId = :taskId")
     boolean isDelete(@Param("taskId") Long taskId);
