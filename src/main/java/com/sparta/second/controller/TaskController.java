@@ -22,18 +22,36 @@ import java.util.List;
 public class TaskController {
     private final TaskService taskService;
 
+    /*
+     * 일정 등록
+     *
+     * @param TaskRequestDto
+     * @return TaskResponseDto
+     * */
     @PostMapping()
     public ResponseEntity<TaskResponseDto> saveTask(@RequestBody TaskRequestDto requestDto) {
         TaskResponseDto responseDto = taskService.save(requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    /*
+     * 일정 단건 조회
+     *
+     * @param taskId
+     * @return TaskResponseDto
+     * */
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskResponseDto> getTask(@PathVariable("taskId") Long taskId) {
         TaskResponseDto responseDto = taskService.get(taskId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    /*
+     * 일정 전체 조회
+     *
+     * @param X
+     * @return PageResultDto<TaskResponseDto, Object[]>
+     * */
     @GetMapping()
     public ResponseEntity<PageResultDto<TaskResponseDto, Object[]>> getAllList(
             @RequestParam(defaultValue = "0") int page,
@@ -43,13 +61,24 @@ public class TaskController {
         return new ResponseEntity<>(taskService.getList(pageRequestDto), HttpStatus.OK);
     }
 
+    /*
+     * 일정 수정
+     *
+     * @param taskId
+     * @return TaskResponseDto
+     * */
     @PatchMapping("/{taskId}")
     public ResponseEntity<TaskResponseDto> modifyTask(@PathVariable("taskId") Long taskId, @RequestBody TaskRequestDto requestDto) {
         TaskResponseDto responseDto = taskService.modify(taskId, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    // 댓글 삭제
+    /*
+     * 일정 삭제
+     *
+     * @param taskId
+     * @return String
+     * */
     @DeleteMapping("/{taskId}")
     public ResponseEntity<String> deleteReply(@PathVariable("taskId") Long taskId) {
         taskService.delete(taskId);

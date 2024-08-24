@@ -3,7 +3,6 @@ package com.sparta.second.service;
 import com.sparta.second.dto.ReplyRequestDto;
 import com.sparta.second.dto.ReplyResponseDto;
 import com.sparta.second.entity.Reply;
-import com.sparta.second.entity.Task;
 import com.sparta.second.exception.AlreadyDeleteException;
 import com.sparta.second.exception.NotFoundException;
 import com.sparta.second.repository.ReplyRepository;
@@ -70,10 +69,8 @@ public class ReplyServiceImpl implements ReplyService {
     @Transactional
     @Override
     public void delete(Long replyId) {
-        if(replyRepository.isDelete(replyId)) {
-            throw new AlreadyDeleteException("해당 일정이 없습니다.");
-        } else {
-            replyRepository.delete(replyId);
-        }
+        Reply reply = replyRepository.findById(replyId)
+                .orElseThrow(() -> new AlreadyDeleteException("해당 일정이 없습니다."));
+        reply.setDeleteStatus(true);
     }
 }

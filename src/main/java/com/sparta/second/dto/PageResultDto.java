@@ -38,11 +38,13 @@ public class PageResultDto<DTO, EN> {
         this.page = pageable.getPageNumber() + 1; // 1페이지가 defaultValue로 인해 0부터 시작하므로 1 추가
         this.size = pageable.getPageSize();
 
-        // 현재 페이지를 기준으로 페이지 목록의 끝 페이지를 계산
-        // 현제 페이지를 10으로 나눈 후 올림하여 페이지 범위를 결정
-        // 도서 참고 : 코드로 배우는 스프링부트 웹 프로젝트
+        /*
+        * 현재 페이지를 기준으로 페이지 목록의 끝 페이지를 계산
+        * 현제 페이지를 10으로 나눈 후 올림하여 페이지 범위를 결정
+        * 도서 참고 : 코드로 배우는 스프링부트 웹 프로젝트
+        * */
         int tempEnd = (int)(Math.ceil(page/10.0))*10;
-        // Ex) 현 페이지가 15일 때 tempEnd는 20이므로 start페이지 넘버는 11이 된다.
+        /* Ex) 현 페이지가 15일 때 tempEnd는 20이므로 start페이지 넘버는 11이 된다.*/
         start = tempEnd - 9;
         end = totalPage > tempEnd ? tempEnd : totalPage;
 

@@ -28,7 +28,4 @@ public class Reply extends BaseEntity {
     public void changeName(String name) {
         this.name = name;
     }
-    public void changeDelete(boolean deleteStatus) {
-        this.deleteStatus = deleteStatus;
-    }
 }

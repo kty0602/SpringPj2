@@ -19,35 +19,60 @@ public class ReplyController {
 
     private final ReplyService replyService;
 
-    // 댓글 등록
+    /*
+    * 댓글 등록
+    *
+    * @param ReplyRequestDto
+    * @return ReplyResponseDto
+    * */
     @PostMapping()
     public ResponseEntity<ReplyResponseDto> saveReply(@RequestBody ReplyRequestDto requestDto) {
         ReplyResponseDto responseDto = replyService.save(requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    // 특정 댓글 조회
+    /*
+     * 댓글 조회
+     *
+     * @param replyId
+     * @return ReplyResponseDto
+     * */
     @GetMapping("/{replyId}")
     public ResponseEntity<ReplyResponseDto> getReply(@PathVariable("replyId") Long replyId) {
         ReplyResponseDto responseDto = replyService.get(replyId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    // 댓글 전체 조회
+    /*
+     * 댓글 전체 목록 조회
+     *
+     * @param X
+     * @return List<ReplyResponseDto>
+     * */
     @GetMapping()
     public ResponseEntity<List<ReplyResponseDto>> getListReply() {
         List<ReplyResponseDto> responseDto = replyService.getList();
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    // 댓글 수정
+    /*
+     * 댓글 수정
+     *
+     * @param {replyId}
+     * @return ReplyResponseDto
+     * */
     @PatchMapping("/{replyId}")
     public ResponseEntity<ReplyResponseDto> modify(@PathVariable("replyId") Long replyId, @RequestBody ReplyRequestDto requestDto) {
         ReplyResponseDto responseDto = replyService.modify(replyId, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    // 댓글 삭제
+    /*
+     * 댓글 삭제
+     *
+     * @param replyId
+     * @return String
+     * */
     @DeleteMapping("/{replyId}")
     public ResponseEntity<String> deleteReply(@PathVariable("replyId") Long replyId) {
         replyService.delete(replyId);

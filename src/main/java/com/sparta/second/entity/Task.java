@@ -3,6 +3,8 @@ package com.sparta.second.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Builder
 @AllArgsConstructor
@@ -19,6 +21,8 @@ public class Task extends BaseEntity {
     private String name;
     @Column(name = "delete_status")
     private boolean deleteStatus;
+    @OneToMany(mappedBy = "task", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Reply> replyList;
 
     public void changeTitle(String title) {
         this.title = title;
@@ -28,8 +32,5 @@ public class Task extends BaseEntity {
     }
     public void changeName(String name) {
         this.name = name;
-    }
-    public void changeDelete(boolean deleteStatus) {
-        this.deleteStatus = deleteStatus;
     }
 }
