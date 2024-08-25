@@ -30,7 +30,7 @@ public class ReplyServiceImpl implements ReplyService {
 
         Reply reply = dtoToEntity(requestDto);
         Reply saveReply = replyRepository.save(reply);
-        return entityToDTO(saveReply, reply.getTask());
+        return entityToDTO(saveReply, reply.getTask(), reply.getUser());
     }
 
     // 댓글 전체 조회
@@ -38,7 +38,7 @@ public class ReplyServiceImpl implements ReplyService {
     public List<ReplyResponseDto> getList() {
         List<Reply> replies = replyRepository.findAllActiveReplies();
         return replies.stream().map(reply ->
-            entityToDTO(reply, reply.getTask())).collect(Collectors.toList());
+            entityToDTO(reply, reply.getTask(), reply.getUser())).collect(Collectors.toList());
     }
 
     // 댓글 단건 조회
@@ -46,7 +46,7 @@ public class ReplyServiceImpl implements ReplyService {
     public ReplyResponseDto get(Long replyId) {
         Optional<Reply> reply = replyRepository.getReplyByReplyId(replyId);
         Reply getReply = reply.orElseThrow(() -> new NotFoundException("해당 댓글이 존재하지 않거나 이미 삭제된 댓글입니다."));
-        return entityToDTO(getReply, getReply.getTask());
+        return entityToDTO(getReply, getReply.getTask(), getReply.getUser());
     }
 
     // 댓글 수정
@@ -58,11 +58,9 @@ public class ReplyServiceImpl implements ReplyService {
         if(requestDto.getContents() != null) {
             reply.changeContent(requestDto.getContents());
         }
-        if(requestDto.getName() != null) {
-            reply.changeName(requestDto.getName());
-        }
+
         Reply newReply = replyRepository.save(reply);
-        return entityToDTO(newReply, reply.getTask());
+        return entityToDTO(newReply, reply.getTask(), reply.getUser());
     }
 
     // 댓글 삭제

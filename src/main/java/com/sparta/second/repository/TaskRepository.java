@@ -29,8 +29,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     * 기존 Task에서 -> Object[]로 변경
     * 일정 과 해당 댓글, 삭제되지 않는 것들만 필터링
     * */
-    @Query(value = "SELECT t, COUNT(r) " +
+    @Query(value = "SELECT t, u, COUNT(r) " +
             "FROM Task t " +
+            "left join t.user u " +
             "LEFT JOIN Reply r ON t.taskId = r.task.taskId AND r.deleteStatus = false " +
             "WHERE t.deleteStatus = false " +
             "GROUP BY t")
@@ -40,8 +41,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     * 특정 bno에 해당하는 게시글과 사용자 정보 댓글의 정보를 제공
     * 댓글을 삭제하여 false처리가 되어도 카운팅하는 현상을 수정
     * */
-    @Query(value = "SELECT t, COUNT(r) " +
+    @Query(value = "SELECT t, u, COUNT(r) " +
             "FROM Task t " +
+            "left join t.user u " +
             "LEFT JOIN Reply r ON r.task = t AND r.deleteStatus = false " +
             "WHERE t.taskId = :taskId AND t.deleteStatus = false " +
             "GROUP BY t")

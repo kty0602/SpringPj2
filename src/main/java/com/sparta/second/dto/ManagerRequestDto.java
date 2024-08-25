@@ -3,8 +3,7 @@ package com.sparta.second.dto;
 import lombok.Data;
 
 @Data
-public class ReplyRequestDto {
-    private String contents;
-    private Long taskId;
+public class ManagerRequestDto {
     private Long userId;
+    private Long taskId;
 }

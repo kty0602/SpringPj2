@@ -4,14 +4,16 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
-@Builder
 @Data
-public class ReplyResponseDto {
-    private Long replyId;
+@Builder
+public class TaskListResponseDto {
     private Long taskId;
+    private String title;
     private String contents;
     private String userName;
+    private int replyCount;
     private LocalDate regDate;
     private LocalDate modDate;
 }

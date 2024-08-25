@@ -4,6 +4,7 @@ import com.sparta.second.dto.ReplyRequestDto;
 import com.sparta.second.dto.ReplyResponseDto;
 import com.sparta.second.entity.Task;
 import com.sparta.second.entity.Reply;
+import com.sparta.second.entity.User;
 
 import java.util.List;
 
@@ -26,21 +27,22 @@ public interface ReplyService {
 
     default Reply dtoToEntity(ReplyRequestDto dto) {
         Task task = Task.builder().taskId(dto.getTaskId()).build();
+        User user = User.builder().userId(dto.getUserId()).build();
 
         Reply reply = Reply.builder()
                 .contents(dto.getContents())
-                .name(dto.getName())
+                .user(user)
                 .task(task)
                 .deleteStatus(false)
                 .build();
         return reply;
     }
 
-    default ReplyResponseDto entityToDTO(Reply reply, Task task) {
+    default ReplyResponseDto entityToDTO(Reply reply, Task task, User user) {
         ReplyResponseDto dto = ReplyResponseDto.builder()
                 .replyId(reply.getReplyId())
                 .contents(reply.getContents())
-                .name(reply.getName())
+                .userName(user.getName())
                 .taskId(task.getTaskId())
                 .regDate(reply.getRegDate())
                 .modDate(reply.getModDate())

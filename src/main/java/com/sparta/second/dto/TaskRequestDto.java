@@ -6,5 +6,5 @@ import lombok.*;
 public class TaskRequestDto {
     private String title;
     private String contents;
-    private String name;
+    private Long userId;
 }

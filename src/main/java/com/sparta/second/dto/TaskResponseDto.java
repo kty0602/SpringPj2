@@ -3,6 +3,7 @@ package com.sparta.second.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -10,8 +11,9 @@ public class TaskResponseDto {
     private Long taskId;
     private String title;
     private String contents;
-    private String name;
+    private String userName;
     private int replyCount;
+    private List<ManagerResponseDto> managerList;
     private LocalDate regDate;
     private LocalDate modDate;
 

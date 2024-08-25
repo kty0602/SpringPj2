@@ -1,9 +1,6 @@
 package com.sparta.second.controller;
 
-import com.sparta.second.dto.PageRequestDto;
-import com.sparta.second.dto.PageResultDto;
-import com.sparta.second.dto.TaskRequestDto;
-import com.sparta.second.dto.TaskResponseDto;
+import com.sparta.second.dto.*;
 import com.sparta.second.entity.Task;
 import com.sparta.second.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +50,7 @@ public class TaskController {
      * @return PageResultDto<TaskResponseDto, Object[]>
      * */
     @GetMapping()
-    public ResponseEntity<PageResultDto<TaskResponseDto, Object[]>> getAllList(
+    public ResponseEntity<PageResultDto<TaskListResponseDto, Object[]>> getAllList(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
