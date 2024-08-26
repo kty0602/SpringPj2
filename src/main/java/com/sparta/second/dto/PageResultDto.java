@@ -28,7 +28,14 @@ public class PageResultDto<DTO, EN> {
     // 페이지 번호 목록
     private List<Integer> pageList;
 
+    /*
+    * Function<EN, DTO>을 사용하는 이유
+    * 만약 다른 객체에서도 페이징 처리가 필요하다면 공통적으로 사용하기 위함
+    * Task에만 고정되어 사용한다면 Function<EN, DTO>부분을 날린다.
+    * 도서 참고 : 코드로 배우는 스프링부트 웹 프로젝트
+    * */
     public PageResultDto(Page<EN> result, Function<EN, DTO> fn) {
+        // Page<EN> 객체를 스트림으로 변환 후에 각 엔티티를 DTO로 매핑하고 리스트로 수집
         dtoList = result.stream().map(fn).collect(Collectors.toList());
         totalPage = result.getTotalPages();
         makePageList(result.getPageable());
