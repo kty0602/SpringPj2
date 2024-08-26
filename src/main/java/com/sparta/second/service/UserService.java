@@ -11,6 +11,9 @@ public interface UserService {
     // 유저 등록
     UserResponseDto save(UserRequestDto requestDto);
 
+    // jwt용 유저 등록
+    String saveJwt(UserRequestDto requestDto);
+
     // 유저 단건 조회
     UserResponseDto get(Long userId);
 
@@ -27,6 +30,7 @@ public interface UserService {
         User user = User.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
+                .password(dto.getPassword())
                 .deleteStatus(false)
                 .build();
         return user;

@@ -26,10 +26,25 @@ public class UserController {
     * @param UserRequestDto
     * @return UserResponseDto
     * */
+//    @PostMapping()
+//    public ResponseEntity<UserResponseDto> saveUser(@RequestBody UserRequestDto requestDto) {
+//        UserResponseDto responseDto = userService.save(requestDto);
+//        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+//    }
+
+    /*
+     * 유저 jwt등록
+     *
+     * @param UserRequestDto
+     * @return token
+     * */
     @PostMapping()
-    public ResponseEntity<UserResponseDto> saveUser(@RequestBody UserRequestDto requestDto) {
-        UserResponseDto responseDto = userService.save(requestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    public ResponseEntity<String> saveUser(@RequestBody UserRequestDto requestDto) {
+        // JWT 토큰을 생성
+        String token = userService.saveJwt(requestDto);
+
+        // 토큰을 응답으로 반환
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
     /*

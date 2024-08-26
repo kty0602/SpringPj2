@@ -3,6 +3,8 @@ package com.sparta.second.service;
 import com.sparta.second.dto.UserRequestDto;
 import com.sparta.second.dto.UserResponseDto;
 import com.sparta.second.entity.User;
+import com.sparta.second.jwt.JwtUtil;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import com.sparta.second.exception.AlreadyDeleteException;
 import com.sparta.second.exception.NotFoundException;
 import com.sparta.second.repository.UserRepository;
@@ -19,13 +21,28 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     // 유저 등록
     @Override
     public UserResponseDto save(UserRequestDto requestDto) {
+        String password = passwordEncoder.encode(requestDto.getPassword());
         User user = dtoToEntity(requestDto);
+        user.setPassword(password);
         User saveUser = userRepository.save(user);
         return entityToDTO(saveUser);
+    }
+
+    // 유저 등록
+    @Override
+    public String saveJwt(UserRequestDto requestDto) {
+        String password = passwordEncoder.encode(requestDto.getPassword());
+        User user = dtoToEntity(requestDto);
+        user.setPassword(password);
+        userRepository.save(user);
+
+        return jwtUtil.createToken(user.getName(), "USER");
     }
 
     // 유저 조회
