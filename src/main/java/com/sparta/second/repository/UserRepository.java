@@ -17,4 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.deleteStatus = false")
     List<User> findAllActiveUsers();
 
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findByName(String subject);
 }

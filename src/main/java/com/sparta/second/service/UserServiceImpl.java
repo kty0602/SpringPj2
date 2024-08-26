@@ -1,9 +1,11 @@
 package com.sparta.second.service;
 
+import com.sparta.second.dto.LoginRequestDto;
 import com.sparta.second.dto.UserRequestDto;
 import com.sparta.second.dto.UserResponseDto;
 import com.sparta.second.entity.User;
 import com.sparta.second.jwt.JwtUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.sparta.second.exception.AlreadyDeleteException;
 import com.sparta.second.exception.NotFoundException;
@@ -12,9 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +38,7 @@ public class UserServiceImpl implements UserService {
         return entityToDTO(saveUser);
     }
 
-    // 유저 등록
+    // 유저 jwt 등록 - 오직 7단계 용
     @Override
     public String saveJwt(UserRequestDto requestDto) {
         String password = passwordEncoder.encode(requestDto.getPassword());
@@ -43,6 +47,28 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return jwtUtil.createToken(user.getName(), "USER");
+    }
+
+    // 유저 로그인
+    @Override
+    public String login(LoginRequestDto requestDto, HttpServletResponse res) {
+        String email = requestDto.getEmail();
+        String password = requestDto.getPassword();
+
+        // 사용자 확인
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
+        );
+
+        // 비밀번호 확인
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        String token = jwtUtil.createToken(user.getName(), "USER");
+
+        jwtUtil.addJwtToCookie(token, res); // 쿠키를 HTTP 응답에 추가
+        return token;
     }
 
     // 유저 조회

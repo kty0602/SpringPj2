@@ -1,8 +1,10 @@
 package com.sparta.second.service;
 
+import com.sparta.second.dto.LoginRequestDto;
 import com.sparta.second.dto.UserRequestDto;
 import com.sparta.second.dto.UserResponseDto;
 import com.sparta.second.entity.User;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
@@ -13,6 +15,9 @@ public interface UserService {
 
     // jwt용 유저 등록
     String saveJwt(UserRequestDto requestDto);
+
+    // 유저 로그인
+    String login(LoginRequestDto requestDto, HttpServletResponse res);
 
     // 유저 단건 조회
     UserResponseDto get(Long userId);
