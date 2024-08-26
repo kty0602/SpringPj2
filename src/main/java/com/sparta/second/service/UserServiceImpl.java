@@ -4,6 +4,7 @@ import com.sparta.second.dto.LoginRequestDto;
 import com.sparta.second.dto.UserRequestDto;
 import com.sparta.second.dto.UserResponseDto;
 import com.sparta.second.entity.User;
+import com.sparta.second.entity.UserRole;
 import com.sparta.second.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,12 +42,19 @@ public class UserServiceImpl implements UserService {
     // 유저 jwt 등록 - 오직 7단계 용
     @Override
     public String saveJwt(UserRequestDto requestDto) {
+        UserRole role = null;
         String password = passwordEncoder.encode(requestDto.getPassword());
+        if ("USER".equals(requestDto.getRole())) {
+            role = UserRole.USER;
+        } else if ("ADMIN".equals(requestDto.getRole())) {
+            role = UserRole.ADMIN;
+        }
         User user = dtoToEntity(requestDto);
         user.setPassword(password);
+        user.setRole(role);
         userRepository.save(user);
 
-        return jwtUtil.createToken(user.getName(), "USER");
+        return jwtUtil.createToken(user.getName(), role);
     }
 
     // 유저 로그인
@@ -65,7 +73,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        String token = jwtUtil.createToken(user.getName(), "USER");
+        String token = jwtUtil.createToken(user.getName(), user.getRole());
 
         jwtUtil.addJwtToCookie(token, res); // 쿠키를 HTTP 응답에 추가
         return token;

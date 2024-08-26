@@ -22,6 +22,9 @@ public class User extends BaseEntity {
     private String password;
     private String name;
     private String email;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRole role;
     @Column(name = "delete_status")
     private boolean deleteStatus;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

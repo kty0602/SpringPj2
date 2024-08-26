@@ -1,5 +1,6 @@
 package com.sparta.second.jwt;
 
+import com.sparta.second.entity.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -45,7 +46,7 @@ public class JwtUtil {
     }
 
     // 토큰 생성 -> 따로 role를 설정할 클래스를 만들지 않을거므로 jwt생성시 무조건 user라는 role를 집어넣을 것이다.
-    public String createToken(String username, String role) {
+    public String createToken(String username, UserRole role) {
         Date date = new Date();
 
         return BEARER_PREFIX +
