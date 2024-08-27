@@ -3,6 +3,7 @@ package com.sparta.second.controller;
 import com.sparta.second.dto.*;
 import com.sparta.second.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class UserController {
     * @return UserResponseDto
     * */
     @PostMapping()
-    public ResponseEntity<UserResponseDto> saveUser(@RequestBody UserRequestDto requestDto) {
+    public ResponseEntity<UserResponseDto> saveUser(@Valid @RequestBody UserRequestDto requestDto) {
         UserResponseDto responseDto = userService.save(requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

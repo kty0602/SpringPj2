@@ -53,8 +53,8 @@ public class TaskServiceImpl implements TaskService {
         }
 
         Task task = dtoToEntity(requestDto);
+        task.setWeather(weatherData);
         Task saveTask = taskRepository.save(task);
-        saveTask.setWeather(weatherData);
 
 
         return entityToDTO(saveTask, saveTask.getUser(),0L);
