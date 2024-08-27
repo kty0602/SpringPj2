@@ -12,6 +12,7 @@ public class TaskResponseDto {
     private String title;
     private String contents;
     private String userName;
+    private String weather;
     private int replyCount;
     private List<ManagerResponseDto> managerList;
     private LocalDate regDate;

@@ -61,7 +61,7 @@ public class AuthFilter implements Filter {
                     * 필터에서는 DispatcherServlet에 도달하기 전에 먼저 거쳐지는 곳이여서 @ControllerAdvice에서 예외처리를 해줄 수 없다.
                     * 그리하여 필터에서 발생한 예외를 직접 처리하여 HttpServletResponse에 적절한 상태 코드와 메시지를 설정한다.
                     * */
-                    if(url.startsWith("/task") && !user.getRole().equals(UserRole.ADMIN)) {
+                    if((url.startsWith("/task/modify") || url.startsWith("/task/delete")) && !user.getRole().equals(UserRole.ADMIN)) {
                         throw new SecurityException("권한이 없습니다.");
                     }
 

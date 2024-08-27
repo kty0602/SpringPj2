@@ -43,6 +43,7 @@ public interface TaskService {
                 .title(task.getTitle())
                 .contents(task.getContents())
                 .userName(user.getName())
+                .weather(task.getWeather())
                 .regDate(task.getRegDate())
                 .modDate(task.getModDate())
                 // 일정 등록 후 반환을 하기에, 초반 담당 유저가 배치되지 않아서 null를 반환하는 문제가 있어 null이면 초기화 하도록 변경

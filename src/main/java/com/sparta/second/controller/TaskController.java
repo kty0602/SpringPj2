@@ -60,11 +60,14 @@ public class TaskController {
 
     /*
      * 일정 수정
+     * [수정 사항]
+     * AuthFilter에서 수정과 삭제만 권한을 검사해야하는데 기존코드로 진행 시
+     * 일정 단건 조회에서도 권한을 검사할 수 있어서 rest가 깨지는 한이 있어도 행위를 포함시키는 방향으로 수정
      *
      * @param taskId
      * @return TaskResponseDto
      * */
-    @PatchMapping("/{taskId}")
+    @PatchMapping("/modify/{taskId}")
     public ResponseEntity<TaskResponseDto> modifyTask(@PathVariable("taskId") Long taskId, @RequestBody TaskRequestDto requestDto) {
         TaskResponseDto responseDto = taskService.modify(taskId, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
@@ -72,11 +75,14 @@ public class TaskController {
 
     /*
      * 일정 삭제
+     * [수정 사항]
+     * AuthFilter에서 수정과 삭제만 권한을 검사해야하는데 기존코드로 진행 시
+     * 일정 단건 조회에서도 권한을 검사할 수 있어서 rest가 깨지는 한이 있어도 행위를 포함시키는 방향으로 수정
      *
      * @param taskId
      * @return String
      * */
-    @DeleteMapping("/{taskId}")
+    @DeleteMapping("/delete/{taskId}")
     public ResponseEntity<String> deleteReply(@PathVariable("taskId") Long taskId) {
         taskService.delete(taskId);
         return new ResponseEntity<>("성공적으로 삭제가 되었습니다.", HttpStatus.OK);

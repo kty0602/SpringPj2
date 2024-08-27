@@ -19,6 +19,7 @@ public class Task extends BaseEntity {
     private Long taskId;
     private String title;
     private String contents;
+    private String weather;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
