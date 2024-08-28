@@ -71,6 +71,8 @@ public class TaskServiceImpl implements TaskService {
                 .build()
                 .toUri();
         log.info("uri = " + uri);
+        // JSON 데이터를 문자열 형태로 받아서 직접 처리하기 위함
+        // 이는 JSON 파싱 라이브러리를 사용하여 데이터를 조작하기 쉬움 -> JSONArray, JSONObject
         ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
         String jsonString = response.getBody();
 
