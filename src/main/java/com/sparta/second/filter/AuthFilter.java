@@ -5,6 +5,7 @@ import com.sparta.second.entity.UserRole;
 import com.sparta.second.jwt.JwtUtil;
 import com.sparta.second.repository.UserRepository;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,7 +54,7 @@ public class AuthFilter implements Filter {
                     Claims info = jwtUtil.getUserInfoFromToken(token);
 
                     User user = userRepository.findByName(info.getSubject()).orElseThrow(() ->
-                            new NullPointerException("Not Found User")
+                            new NullPointerException("사용자를 찾을 수 없습니다.")
                     );
 
                     /*
@@ -68,11 +69,13 @@ public class AuthFilter implements Filter {
                     request.setAttribute("user", user);
                     chain.doFilter(request, response); // 다음 Filter 로 이동
                 } else {
-                    throw new IllegalArgumentException("Not Found Token");
+                    throw new JwtException("토큰이 존재하지 않습니다!");
                 }
             }
         } catch (SecurityException e) {
             httpServletResponse.sendError(HttpStatus.FORBIDDEN.value(), e.getMessage());
+        } catch (JwtException e) {
+            httpServletResponse.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         }
     }
 }
